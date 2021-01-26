@@ -1,0 +1,38 @@
+{
+  "name": "@voom/ashe",
+  "description": "Hashing utilities for Hapi",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": "git://github.com/voomjs/ashe",
+  "main": "lib/index.js",
+  "files": [
+    "lib/**/*"
+  ],
+  "keywords": [
+    "hapi",
+    "plugin",
+    "crypto",
+    "hash"
+  ],
+  "dependencies": {
+    "bcrypt": "5.x.x",
+    "joi": "17.x.x"
+  },
+  "devDependencies": {
+    "@hapi/code": "8.x.x",
+    "@hapi/hapi": "20.x.x",
+    "@hapi/lab": "24.x.x",
+    "standard": "16.x.x"
+  },
+  "scripts": {
+    "test": "lab",
+    "test-html": "lab -r html -o coverage.html",
+    "lint": "standard --fix"
+  },
+  "standard": {
+    "env": [
+      "es6",
+      "node"
+    ]
+  }
+}
