@@ -48,7 +48,7 @@ async function start () {
   // true
 
   const hash = await bcrypt.make('hello', 12)
-  // $2b$11$Rws...
+  // $2b$12$Ijy...
 
   const valid = await bcrypt.check('hello', hash)
   // true
