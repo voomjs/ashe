@@ -1,6 +1,7 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const Hapi = require('@hapi/hapi')
+const Hoek = require('@hapi/hoek')
 
 const Plugin = require('../lib')
 
@@ -16,12 +17,12 @@ const defaults = {
   }
 }
 
-async function withServer (options) {
+async function withServer (options = {}) {
   const server = Hapi.Server()
 
   await server.register({
     plugin: Plugin,
-    options: Object.assign({}, defaults, options)
+    options: Hoek.applyToDefaults(defaults, options)
   })
 
   return server
