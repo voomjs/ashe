@@ -56,65 +56,69 @@ describe('plugin', function () {
     expect(res.statusCode).to.be.equal(200)
   })
 
-  it('encrypts data using bcrypt', async function () {
-    const server = await withServer()
+  describe('bcrypt', function () {
+    it('encrypts data using bcrypt', async function () {
+      const server = await withServer()
 
-    const bcrypt = server.ashe().bcrypt()
+      const bcrypt = server.ashe().bcrypt()
 
-    expect(bcrypt).to.be.an.object()
+      expect(bcrypt).to.be.an.object()
 
-    const data = 'hello'
-    const hash = await bcrypt.make(data)
+      const data = 'hello'
+      const hash = await bcrypt.make(data)
 
-    expect(hash).to.be.a.string()
+      expect(hash).to.be.a.string()
 
-    expect(await bcrypt.check(data, hash)).to.be.true()
-    expect(await bcrypt.check(data, 'fail')).to.be.false()
+      expect(await bcrypt.check(data, hash)).to.be.true()
+      expect(await bcrypt.check(data, 'fail')).to.be.false()
+    })
+
+    it('encrypts data using bcrypt and custom rounds', async function () {
+      const server = await withServer()
+
+      const bcrypt = server.ashe().bcrypt()
+
+      expect(bcrypt).to.be.an.object()
+
+      const data = 'hello'
+      const hash = await bcrypt.make(data, 12)
+
+      expect(hash).to.be.a.string()
+
+      expect(await bcrypt.check(data, hash)).to.be.true()
+    })
   })
 
-  it('encrypts data using bcrypt and custom rounds', async function () {
-    const server = await withServer()
+  describe('hasher', function () {
+    it('encrypts data using sha256', async function () {
+      const server = await withServer()
 
-    const bcrypt = server.ashe().bcrypt()
+      const hasher = server.ashe().hasher('sha256')
 
-    expect(bcrypt).to.be.an.object()
+      expect(hasher).to.be.an.object()
 
-    const data = 'hello'
-    const hash = await bcrypt.make(data, 12)
+      const data = 'hello'
+      const hash = hasher.make(data)
 
-    expect(hash).to.be.a.string()
+      expect(hash).to.be.a.string()
 
-    expect(await bcrypt.check(data, hash)).to.be.true()
-  })
+      expect(hasher.check(data, hash)).to.be.true()
+      expect(hasher.check(data, 'fail')).to.be.false()
+    })
 
-  it('encrypts data using sha256', async function () {
-    const server = await withServer()
+    it('encrypts data using sha256 and custom secret', async function () {
+      const server = await withServer()
 
-    const hasher = server.ashe().hasher('sha256')
+      const hasher = server.ashe().hasher('sha256')
 
-    expect(hasher).to.be.an.object()
+      expect(hasher).to.be.an.object()
 
-    const data = 'hello'
-    const hash = hasher.make(data)
+      const data = 'hello'
+      const hash = hasher.make(data, 'secret')
 
-    expect(hash).to.be.a.string()
+      expect(hash).to.be.a.string()
 
-    expect(hasher.check(data, hash)).to.be.true()
-    expect(hasher.check(data, 'fail')).to.be.false()
-  })
-
-  it('encrypts data using sha256 and custom secret', async function () {
-    const server = await withServer()
-
-    const hasher = server.ashe().hasher('sha256')
-
-    expect(hasher).to.be.an.object()
-
-    const data = 'hello'
-    const hash = hasher.make(data, 'secret')
-
-    expect(hash).to.be.a.string()
-
-    expect(hasher.check(data, hash)).to.be.false()
+      expect(hasher.check(data, hash)).to.be.false()
+    })
   })
 })
